@@ -9,8 +9,12 @@
 
 int main(int c, char **v)
 {
-	std::string str = "5 * X^0 + 4 * X^1 - 9.3 * X^2 = 1 * X^0";
-	Parser parser(str);
+	if (c != 2)
+	{
+		std::cout << "Wrong number of arguments\n";
+		return 1;
+	}
+	Parser parser(v[1]);
 	Polynom polynom;
 	Parser::STerms terms;
 	while (parser.readTerms(terms))

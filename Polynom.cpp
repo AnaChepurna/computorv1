@@ -122,7 +122,9 @@ std::ostream & operator<<(std::ostream & out, const Polynom & f)
 			}
 			else
 				out << " - ";
-			if (pabs(p.second) != 1)
+			if (p.first == 0)
+				out << pabs(p.second);
+			else if (pabs(p.second) != 1)
 				out << pabs(p.second);
 			if (p.first > 0)
 			{
