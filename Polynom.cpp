@@ -50,7 +50,8 @@ void Polynom::streamRoots(std::ostream & out)
 			out << ", " << x2;
 	}
 	else
-		out << "I can't solve";
+		out << "I can't solve";
+
 }
 
 int Polynom::getDegree()
@@ -60,9 +61,9 @@ int Polynom::getDegree()
 	for (std::pair<int, float> p : coefs)
 	{
 		if (p.second != 0)
-			degree = std::_Max_value(degree, p.first);
+			degree = degree > p.first ? degree : p.first;
 		if (p.second != 0)
-			minDegree = std::_Min_value(minDegree, p.first);
+			minDegree = degree < p.first ? degree : p.first;
 	}
 	return degree;
 }
@@ -77,14 +78,35 @@ bool Polynom::getRoots1(float & x1, float & x2)
 	return true;
 }
 
+
 bool Polynom::getRoots2(float & x1, float & x2)
 {
 	float discriminant = getDiscriminant();
 	if (discriminant < 0)
 		return false;
-	x1 = (-coefs.at(1) + sqrt(discriminant)) / (2 * coefs.at(2));
-	x2 = (-coefs.at(1) - sqrt(discriminant)) / (2 * coefs.at(2));
+	x1 = (-coefs.at(1) + psqrt(discriminant)) / (2 * coefs.at(2));
+	x2 = (-coefs.at(1) - psqrt(discriminant)) / (2 * coefs.at(2));
 	return true;
+}
+
+float psqrt(float value)
+{
+	float low = 0, hight = value, mid;
+ 	for (int i = 0 ; i < 1000 ; i++){
+     	mid = (low + hight) / 2;
+     	if (mid * mid == value)
+     		return mid;
+     	if (mid * mid > value)
+     		hight = mid;
+     	else
+     		low = mid;
+  }
+  return mid;
+}
+
+float pabs(float value)
+{
+	return value > 0 ? value : -value;
 }
 
 std::ostream & operator<<(std::ostream & out, const Polynom & f)
@@ -100,11 +122,11 @@ std::ostream & operator<<(std::ostream & out, const Polynom & f)
 			}
 			else
 				out << " - ";
-			if (std::abs(p.second) != 1)
-				out << std::abs(p.second);
+			if (pabs(p.second) != 1)
+				out << pabs(p.second);
 			if (p.first > 0)
 			{
-				if (std::abs(p.second) != 1)
+				if (pabs(p.second) != 1)
 					out << " *";
 				out << " X";
 				if (p.first > 1)

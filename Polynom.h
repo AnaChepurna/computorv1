@@ -1,6 +1,8 @@
 #pragma once
 
-#include <cmath>
+#ifndef POLY
+#define POLY 
+
 #include <iostream>
 #include <map>
 
@@ -27,5 +29,9 @@ private:
 	bool getRoots2(float &x1, float &x2);
 };
 
+float pabs(float value);
+float psqrt(float value);
+
 std::ostream& operator<<(std::ostream& out, const Polynom& f);
 
+#endif
